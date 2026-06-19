@@ -3,77 +3,40 @@ import QrStudio from "./components/QrStudio.vue";
 </script>
 
 <template>
-  <div class="app">
-    <header class="app__header">
-      <div class="logo-badge" aria-hidden="true">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2" />
-          <rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2" />
-          <rect x="14.5" y="14.5" width="2.4" height="2.4" />
-          <rect x="19" y="14.5" width="2" height="2.4" />
-          <rect x="14.5" y="19" width="2.4" height="2" />
-          <rect x="18.5" y="18.5" width="2.5" height="2.5" />
-        </svg>
-      </div>
-      <div>
-        <h1 class="app__title">QR Studio</h1>
-        <p class="app__subtitle">
-          Gere QR Codes personalizados — tudo roda localmente no seu navegador.
-        </p>
-      </div>
-    </header>
+  <div class="min-h-screen bg-base-200 text-base-content">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+      <header class="mb-8 flex items-center gap-4">
+        <div class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-primary-content shadow-md">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2" />
+            <rect x="14.5" y="14.5" width="2.4" height="2.4" />
+            <rect x="19" y="14.5" width="2" height="2.4" />
+            <rect x="14.5" y="19" width="2.4" height="2" />
+            <rect x="18.5" y="18.5" width="2.5" height="2.5" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h1 class="text-2xl font-bold tracking-tight">QR Studio</h1>
+          <p class="text-sm opacity-60">
+            Gere QR Codes personalizados — tudo roda localmente no seu navegador.
+          </p>
+        </div>
 
-    <QrStudio initial-text="https://github.com/azincourt-tech/qrgenerator" />
+        <!-- Alternância de tema claro/escuro -->
+        <label class="swap swap-rotate btn btn-ghost btn-circle" title="Alternar tema">
+          <input type="checkbox" class="theme-controller" value="dark" />
+          <svg class="swap-off h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M5.64 17l-.71.71a1 1 0 0 0 1.41 1.41l.71-.71A1 1 0 0 0 5.64 17zM5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1zm7-7a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1zM5.64 7.05a1 1 0 0 0 .7.29 1 1 0 0 0 .71-.29 1 1 0 0 0 0-1.41l-.71-.71a1 1 0 0 0-1.41 1.41zM17 5.64a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.71.71A1 1 0 0 0 17 5.64zM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zm-2.36 6a1 1 0 0 0-1.41 1.41l.71.71a1 1 0 0 0 1.41-1.41zM12 19a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1zm0-14a7 7 0 1 0 7 7 7 7 0 0 0-7-7z" /></svg>
+          <svg class="swap-on h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05z" /></svg>
+        </label>
+      </header>
 
-    <footer class="app__footer">
-      Aplicação 100% estática · sem servidor, sem login · seus dados nunca saem do navegador.
-    </footer>
+      <QrStudio initial-text="https://github.com/azincourt-tech/qrgenerator" />
+
+      <footer class="mt-10 text-center text-xs opacity-50">
+        Aplicação 100% estática · sem servidor, sem login · seus dados nunca saem do navegador.
+      </footer>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.app {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 40px 24px 64px;
-}
-
-.app__header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 32px;
-}
-
-.logo-badge {
-  width: 46px;
-  height: 46px;
-  border-radius: 13px;
-  background: linear-gradient(135deg, #4f46e5, #7c6cf0);
-  display: grid;
-  place-items: center;
-  color: #fff;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
-}
-
-.app__title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
-.app__subtitle {
-  margin: 2px 0 0;
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.app__footer {
-  text-align: center;
-  color: #6b7280;
-  font-size: 0.78rem;
-  margin-top: 40px;
-}
-</style>

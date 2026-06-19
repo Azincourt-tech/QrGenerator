@@ -1,23 +1,32 @@
 # QR Studio — Gerador de QR Code
 
-Ferramenta web minimalista para gerar QR Codes, com design limpo, cantos
-suaves e tudo rodando **100% no navegador** — sem servidor, sem banco de dados
-e sem login. Feita em **Vue 3 + Vite** (sem React).
+Ferramenta web para gerar QR Codes **altamente personalizáveis**, com design
+limpo e tudo rodando **100% no navegador** — sem servidor, sem banco de dados e
+sem login. Feita em **Vue 3 + Vite + Tailwind CSS + DaisyUI** (sem React).
 
 ## Funcionalidades
 
-- **Entrada de conteúdo** — URL ou qualquer texto (suporta Unicode, Wi-Fi, vCard, etc.).
-- **Logo central** — envie uma imagem (PNG/JPG/SVG) para o centro do código.
-  Uma margem é adicionada automaticamente ao redor do logo e o nível de correção
-  de erro sobe para **Alto** para manter a leitura confiável.
-- **Cores personalizadas** — cor do código e do fundo, com seletor visual e
-  campo para código **hexadecimal** manual.
-- **Fundo transparente** — checkbox que remove o fundo (exportação PNG/SVG com
-  canal alfa).
-- **Resolução ajustável** — de 256 px até 4096 px.
-- **Exportação** — download em **PNG** (raster) e **SVG** (vetorial).
-- **Histórico local** — os últimos QR Codes gerados ficam salvos no
-  `localStorage`; clique para restaurar as configurações.
+- **Conteúdo livre** — URL ou qualquer texto, com suporte correto a **acentos,
+  emojis e Unicode** (codificação UTF-8).
+- **Estilo dos pontos** — quadrado, arredondado, pontos, clássico, clássico
+  arredondado e extra arredondado.
+- **Estilo dos cantos** — formato e cor independentes para o quadrado externo e
+  o ponto interno dos marcadores (ou "automático", seguindo os pontos).
+- **Cores e gradiente** — cor sólida ou gradiente (linear/radial) com rotação
+  ajustável; entrada visual e por código **hexadecimal** manual.
+- **Logo central** — envie uma imagem (PNG/JPG/SVG), ajuste **tamanho** e
+  **margem**, e opcionalmente esconda os pontos atrás do logo.
+- **Fundo** — cor personalizada ou **transparente** (PNG/SVG com canal alfa).
+- **Correção de erro** — L / M / Q / H (elevada automaticamente para H quando há
+  logo).
+- **Exportação** — PNG (raster) e SVG (vetorial), de 256 px a 4096 px.
+- **Histórico local** — salvo no `localStorage` **somente ao baixar** um QR
+  Code; clique para restaurar todas as configurações.
+
+A renderização e os estilos usam a biblioteca
+[`qr-code-styling`](https://qr-code-styling.com/) (a mesma do site de
+referência), empacotada localmente — nada é carregado de CDN em tempo de
+execução.
 
 ## Desenvolvimento
 
@@ -30,13 +39,20 @@ npm run build    # build de produção -> dist/
 npm run preview  # pré-visualiza o build de produção
 ```
 
+> O projeto inclui um `.npmrc` com `legacy-peer-deps=true` para evitar conflitos
+> de peer dependencies de ferramentas transitivas.
+
 ## Usar como componente em outro projeto
 
 Toda a ferramenta é encapsulada no componente **`<QrStudio />`**
-(`src/components/QrStudio.vue`), com estilos *scoped* e variáveis CSS próprias —
-ele não vaza estilos para a aplicação hospedeira. Para reaproveitá-lo, copie a
-pasta `src/lib/` (codificador + renderização, sem dependências) e o arquivo
-`src/components/QrStudio.vue` para o seu projeto e importe:
+(`src/components/QrStudio.vue`, que usa o auxiliar `ColorField.vue`). Para
+reaproveitá-lo, copie esses componentes para o seu projeto e instale as
+dependências usadas:
+
+```bash
+npm install qr-code-styling
+# o projeto hospedeiro precisa de Tailwind CSS + DaisyUI para os estilos
+```
 
 ```vue
 <script setup>
@@ -51,19 +67,19 @@ import QrStudio from "@/components/QrStudio.vue";
 </template>
 ```
 
-| Prop          | Tipo     | Padrão                    | Descrição                                  |
-| ------------- | -------- | ------------------------- | ------------------------------------------ |
-| `initialText` | `String` | `""`                      | Conteúdo inicial do QR Code.               |
-| `historyKey`  | `String` | `"qrstudio.history.v1"`   | Chave do `localStorage` (isola históricos). |
+| Prop          | Tipo     | Padrão                  | Descrição                                   |
+| ------------- | -------- | ----------------------- | ------------------------------------------- |
+| `initialText` | `String` | `""`                    | Conteúdo inicial do QR Code.                |
+| `historyKey`  | `String` | `"qrstudio.history.v1"` | Chave do `localStorage` (isola históricos). |
 
 ## Hospedagem gratuita (Netlify)
 
-O projeto já inclui `netlify.toml`. Há duas formas:
+O projeto já inclui `netlify.toml`.
 
 **1. Conectando o repositório (CI/CD automático)**
 
 1. Em [app.netlify.com](https://app.netlify.com) → _Add new site_ → _Import an existing project_.
-2. Selecione este repositório no GitHub.
+2. Selecione este repositório.
 3. O Netlify detecta as configurações do `netlify.toml`:
    - Build command: `npm run build`
    - Publish directory: `dist`
@@ -76,33 +92,33 @@ npm run build
 npx netlify-cli deploy --prod --dir=dist
 ```
 
-> Também funciona sem ajustes em **Vercel**, **Cloudflare Pages** e
-> **GitHub Pages** (qualquer host de site estático), pois `vite.config.js`
-> usa `base: "./"` (caminhos relativos).
+> Também funciona em **Vercel**, **Cloudflare Pages** e **GitHub Pages**, pois
+> `vite.config.js` usa `base: "./"` (caminhos relativos).
 
 ## Estrutura
 
 ```
 index.html                    Entrada do Vite
-vite.config.js                Configuração de build (saída em dist/)
+vite.config.js                Build + plugins (Vue, Tailwind)
 netlify.toml                  Configuração de deploy
 src/
   main.js                     Bootstrap da aplicação
-  App.vue                     Casca do app standalone (cabeçalho/rodapé)
-  components/QrStudio.vue      Componente reutilizável (toda a UI + lógica)
-  styles/global.css           Estilos globais da página
-  lib/qrcodegen.js            Codificador de QR (versões 1–40, Reed–Solomon)
-  lib/qr-renderer.js          Renderização canvas (PNG) + SVG, cores, logo
+  App.vue                     Casca do app (cabeçalho, tema claro/escuro, rodapé)
+  components/QrStudio.vue      Componente principal (toda a UI + lógica)
+  components/ColorField.vue    Campo de cor reutilizável (seletor + hexadecimal)
+  styles/global.css           Tailwind + DaisyUI + utilitários
 ```
 
-### Qualidade
+### Qualidade / notas técnicas
 
-O codificador de QR é próprio, **sem dependências externas**, e validado por
-testes de _round-trip_ (codificar → rasterizar → decodificar com um leitor
-independente) cobrindo conteúdo numérico, alfanumérico, Unicode, textos longos
-e códigos com logo central.
+- A `qr-code-styling` codifica os bytes em Latin-1; o componente converte o
+  texto para **bytes UTF-8** antes de gerar o código, garantindo a leitura
+  correta de acentos e emojis. Esse comportamento foi validado por testes de
+  _round-trip_ (gerar → decodificar com um leitor independente) cobrindo ASCII,
+  Unicode/emoji, conteúdo numérico e alfanumérico, em vários níveis de correção
+  de erro.
 
-> Conforme solicitado, **não** é usado React. O único framework é Vue 3.
+> Conforme solicitado, **não** é usado React. O framework é Vue 3.
 
 ## Privacidade
 

@@ -2,7 +2,7 @@
 
 Ferramenta web para gerar QR Codes **altamente personalizáveis**, com design
 limpo e tudo rodando **100% no navegador** — sem servidor, sem banco de dados e
-sem login. Feita em **Vue 3 + Vite + Tailwind CSS + DaisyUI** (sem React).
+sem login. Feita em **Vue 3 + Vite + Tailwind CSS + DaisyUI**.
 
 ## Funcionalidades
 
@@ -72,29 +72,6 @@ import QrStudio from "@/components/QrStudio.vue";
 | `initialText` | `String` | `""`                    | Conteúdo inicial do QR Code.                |
 | `historyKey`  | `String` | `"qrstudio.history.v1"` | Chave do `localStorage` (isola históricos). |
 
-## Hospedagem gratuita (Netlify)
-
-O projeto já inclui `netlify.toml`.
-
-**1. Conectando o repositório (CI/CD automático)**
-
-1. Em [app.netlify.com](https://app.netlify.com) → _Add new site_ → _Import an existing project_.
-2. Selecione este repositório.
-3. O Netlify detecta as configurações do `netlify.toml`:
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-4. _Deploy_. Cada push passa a gerar um novo deploy automaticamente.
-
-**2. Deploy manual via CLI**
-
-```bash
-npm run build
-npx netlify-cli deploy --prod --dir=dist
-```
-
-> Também funciona em **Vercel**, **Cloudflare Pages** e **GitHub Pages**, pois
-> `vite.config.js` usa `base: "./"` (caminhos relativos).
-
 ## Estrutura
 
 ```
@@ -118,7 +95,6 @@ src/
   Unicode/emoji, conteúdo numérico e alfanumérico, em vários níveis de correção
   de erro.
 
-> Conforme solicitado, **não** é usado React. O framework é Vue 3.
 
 ## Privacidade
 

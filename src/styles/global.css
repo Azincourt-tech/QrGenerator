@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* DaisyUI como plugin do Tailwind v4. Tema claro é o padrão; o escuro é
+   ativado manualmente pelo botão (data-theme no <html>), não pelo SO. */
+@plugin "daisyui" {
+  themes: light --default, dark;
+}
+
+/* Bordas levemente arredondadas em campos, botões e caixas. */
+:root {
+  --radius-field: 0.625rem !important;
+  --radius-box: 1rem !important;
+  --radius-selector: 0.625rem !important;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fundo quadriculado para visualizar transparência no preview. */
+.qr-checker {
+  background-color: var(--color-base-100);
+  background-image: linear-gradient(45deg, var(--color-base-300) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-base-300) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-base-300) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-base-300) 75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+}
+
+/* O canvas/svg injetado pela qr-code-styling deve preencher o palco. */
+.qr-canvas-host :where(canvas, svg) {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  display: block;
+}

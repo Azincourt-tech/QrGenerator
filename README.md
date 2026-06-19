@@ -2,7 +2,7 @@
 
 Ferramenta web para gerar QR Codes **altamente personalizáveis**, com design
 limpo e tudo rodando **100% no navegador** — sem servidor, sem banco de dados e
-sem login. Feita em **Vue 3 + Vite + Tailwind CSS + DaisyUI** (sem React).
+sem login. Feita em **Vue 3 + Vite + Tailwind CSS + DaisyUI**.
 
 ## Funcionalidades
 

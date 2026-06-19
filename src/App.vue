@@ -62,7 +62,7 @@ onMounted(() => {
         </button>
       </header>
 
-      <QrStudio initial-text="https://github.com/azincourt-tech/qrgenerator" />
+      <QrStudio />
 
       <footer class="mt-10 text-center text-xs opacity-50">
         Aplicação 100% estática · sem servidor, sem login · seus dados nunca saem do navegador.

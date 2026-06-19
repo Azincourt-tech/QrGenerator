@@ -2,7 +2,10 @@
  * Rendering layer: turns a QrCode module matrix into a <canvas> bitmap or an
  * SVG string, with support for custom colors, transparent background and a
  * centered logo that automatically clears a padded area for legibility.
+ *
+ * ES module: exports `QrRenderer`.
  */
+const __ns = {};
 (function (global) {
   "use strict";
 
@@ -152,4 +155,7 @@
     drawCanvas: drawCanvas,
     buildSvg: buildSvg
   };
-})(typeof window !== "undefined" ? window : this);
+})(__ns);
+
+export const QrRenderer = __ns.QrRenderer;
+export default __ns.QrRenderer;

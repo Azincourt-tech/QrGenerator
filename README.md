@@ -2,7 +2,7 @@
 
 Ferramenta web minimalista para gerar QR Codes, com design limpo, cantos
 suaves e tudo rodando **100% no navegador** — sem servidor, sem banco de dados
-e sem login.
+e sem login. Feita em **Vue 3 + Vite** (sem React).
 
 ## Funcionalidades
 
@@ -17,48 +17,90 @@ e sem login.
 - **Resolução ajustável** — de 256 px até 4096 px.
 - **Exportação** — download em **PNG** (raster) e **SVG** (vetorial).
 - **Histórico local** — os últimos QR Codes gerados ficam salvos no
-  `localStorage` do navegador; clique para restaurar as configurações.
+  `localStorage`; clique para restaurar as configurações.
 
-## Como usar
+## Desenvolvimento
 
-É um site estático puro. Basta servir a pasta ou abrir o `index.html`:
+Requer Node.js 18+.
 
 ```bash
-# opção 1: abrir direto
-xdg-open index.html        # Linux
-open index.html            # macOS
-
-# opção 2: servidor estático local (recomendado)
-python3 -m http.server 8080
-# depois acesse http://localhost:8080
+npm install      # instala dependências
+npm run dev      # servidor de desenvolvimento (http://localhost:5173)
+npm run build    # build de produção -> dist/
+npm run preview  # pré-visualiza o build de produção
 ```
 
-Para publicar, faça deploy da pasta em qualquer host estático
-(GitHub Pages, Netlify, Cloudflare Pages, S3, etc.).
+## Usar como componente em outro projeto
 
-## Arquitetura
+Toda a ferramenta é encapsulada no componente **`<QrStudio />`**
+(`src/components/QrStudio.vue`), com estilos *scoped* e variáveis CSS próprias —
+ele não vaza estilos para a aplicação hospedeira. Para reaproveitá-lo, copie a
+pasta `src/lib/` (codificador + renderização, sem dependências) e o arquivo
+`src/components/QrStudio.vue` para o seu projeto e importe:
 
-Sem etapa de build e sem dependências de CDN em tempo de execução — tudo é
-carregado localmente para funcionar inclusive offline.
+```vue
+<script setup>
+import QrStudio from "@/components/QrStudio.vue";
+</script>
+
+<template>
+  <QrStudio
+    initial-text="https://meu-link.com"
+    history-key="meu-projeto.qr-history"
+  />
+</template>
+```
+
+| Prop          | Tipo     | Padrão                    | Descrição                                  |
+| ------------- | -------- | ------------------------- | ------------------------------------------ |
+| `initialText` | `String` | `""`                      | Conteúdo inicial do QR Code.               |
+| `historyKey`  | `String` | `"qrstudio.history.v1"`   | Chave do `localStorage` (isola históricos). |
+
+## Hospedagem gratuita (Netlify)
+
+O projeto já inclui `netlify.toml`. Há duas formas:
+
+**1. Conectando o repositório (CI/CD automático)**
+
+1. Em [app.netlify.com](https://app.netlify.com) → _Add new site_ → _Import an existing project_.
+2. Selecione este repositório no GitHub.
+3. O Netlify detecta as configurações do `netlify.toml`:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+4. _Deploy_. Cada push passa a gerar um novo deploy automaticamente.
+
+**2. Deploy manual via CLI**
+
+```bash
+npm run build
+npx netlify-cli deploy --prod --dir=dist
+```
+
+> Também funciona sem ajustes em **Vercel**, **Cloudflare Pages** e
+> **GitHub Pages** (qualquer host de site estático), pois `vite.config.js`
+> usa `base: "./"` (caminhos relativos).
+
+## Estrutura
 
 ```
-index.html                 Estrutura e template Vue
-css/styles.css             Estilos (design minimalista, cantos suaves)
-js/qrcodegen.js            Codificador de QR Code (versões 1–40, modos
-                           numérico/alfanumérico/byte, Reed–Solomon)
-js/qr-renderer.js          Renderização para <canvas> (PNG) e SVG, cores,
-                           transparência e recorte automático para o logo
-js/app.js                  Aplicação Vue 3: UI, histórico e exportação
-vendor/vue.global.prod.js  Vue 3 (build de produção, servido localmente)
+index.html                    Entrada do Vite
+vite.config.js                Configuração de build (saída em dist/)
+netlify.toml                  Configuração de deploy
+src/
+  main.js                     Bootstrap da aplicação
+  App.vue                     Casca do app standalone (cabeçalho/rodapé)
+  components/QrStudio.vue      Componente reutilizável (toda a UI + lógica)
+  styles/global.css           Estilos globais da página
+  lib/qrcodegen.js            Codificador de QR (versões 1–40, Reed–Solomon)
+  lib/qr-renderer.js          Renderização canvas (PNG) + SVG, cores, logo
 ```
 
-### Stack
+### Qualidade
 
-- **Vue 3** (build global, sem etapa de bundle) para a reatividade da interface.
-- **Codificador de QR próprio**, sem dependências externas. A implementação foi
-  validada por testes de _round-trip_ (codificar → rasterizar → decodificar com
-  um leitor independente) cobrindo conteúdo numérico, alfanumérico, Unicode,
-  textos longos e códigos com logo central.
+O codificador de QR é próprio, **sem dependências externas**, e validado por
+testes de _round-trip_ (codificar → rasterizar → decodificar com um leitor
+independente) cobrindo conteúdo numérico, alfanumérico, Unicode, textos longos
+e códigos com logo central.
 
 > Conforme solicitado, **não** é usado React. O único framework é Vue 3.
 

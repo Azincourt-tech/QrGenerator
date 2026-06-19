@@ -1,0 +1,15 @@
+# Deploy no Netlify (plano gratuito).
+# Conecte o repositório no painel do Netlify — estas configurações são
+# detectadas automaticamente.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA de página única: qualquer rota cai no index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -10,7 +10,10 @@
  *   QrCode.size            (number of modules per side)
  *   QrCode.getModule(x, y) (boolean: true = dark)
  *   qrcodegen.QrCode.Ecc.{LOW,MEDIUM,QUARTILE,HIGH}
+ *
+ * ES module: exports `QrCode`. The verified algorithm body is kept intact.
  */
+const __ns = {};
 (function (global) {
   "use strict";
 
@@ -551,4 +554,7 @@
 
   /* ----- Export ----- */
   global.qrcodegen = { QrCode: QrCode };
-})(typeof window !== "undefined" ? window : this);
+})(__ns);
+
+export const QrCode = __ns.qrcodegen.QrCode;
+export default __ns.qrcodegen;

@@ -1,0 +1,24 @@
+/* Estilos globais da página (apenas o "chrome" do app standalone).
+   Toda a UI do gerador vive, com escopo, dentro de QrStudio.vue. */
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f4f5f7;
+  color: #1c2128;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}

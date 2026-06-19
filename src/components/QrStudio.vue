@@ -295,7 +295,15 @@ function clearHistory() {
       <!-- Conteúdo -->
       <div class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body gap-3">
-          <label class="text-sm font-semibold">Conteúdo do QR Code</label>
+          <div class="flex items-start gap-3">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
+            </span>
+            <div>
+              <h2 class="text-base font-semibold leading-tight">1. Conteúdo</h2>
+              <p class="text-xs opacity-60">O link ou texto que o QR Code vai abrir.</p>
+            </div>
+          </div>
           <textarea
             v-model="o.text"
             class="textarea min-h-24 w-full"
@@ -311,6 +319,15 @@ function clearHistory() {
       <!-- Personalização (tabs) -->
       <div class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body gap-4">
+          <div class="flex items-start gap-3">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5" /><circle cx="6.5" cy="12" r="2.5" /><circle cx="17" cy="14" r="2.5" /><path d="M11 6.5H4M9 12h11M14.5 14H4" /></svg>
+            </span>
+            <div>
+              <h2 class="text-base font-semibold leading-tight">2. Personalização</h2>
+              <p class="text-xs opacity-60">Deixe o QR Code com a sua cara.</p>
+            </div>
+          </div>
           <div role="tablist" class="tabs tabs-box bg-base-200">
             <a
               role="tab"
@@ -471,29 +488,51 @@ function clearHistory() {
       <!-- Exportação -->
       <div class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body gap-4">
+          <div class="flex items-start gap-3">
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+            </span>
+            <div>
+              <h2 class="text-base font-semibold leading-tight">3. Baixar</h2>
+              <p class="text-xs opacity-60">Escolha a qualidade e o formato do arquivo.</p>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label class="flex flex-col w-full">
-              <span class="mb-1 text-xs font-medium opacity-70">Correção de erro</span>
+              <span class="mb-1 flex items-center gap-1.5 text-xs font-medium opacity-70">
+                Resistência a danos
+                <span
+                  class="tooltip tooltip-right cursor-help"
+                  data-tip="Define o quanto o QR Code continua funcionando mesmo sujo, riscado ou com um logo no centro. Níveis maiores são mais robustos, mas deixam o desenho mais denso."
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+                </span>
+              </span>
               <select v-model="o.ecc" class="select select-sm w-full">
-                <option value="L">Baixa (L) — 7%</option>
-                <option value="M">Média (M) — 15%</option>
-                <option value="Q">Alta (Q) — 25%</option>
-                <option value="H">Máxima (H) — 30%</option>
+                <option value="L">Baixa</option>
+                <option value="M">Média</option>
+                <option value="Q">Alta (recomendado)</option>
+                <option value="H">Máxima</option>
               </select>
             </label>
             <label class="flex flex-col w-full">
-              <span class="mb-1 text-xs font-medium opacity-70">Resolução</span>
+              <span class="mb-1 text-xs font-medium opacity-70">Tamanho da imagem</span>
               <select v-model.number="o.resolution" class="select select-sm w-full">
-                <option :value="256">256 px</option>
-                <option :value="512">512 px</option>
-                <option :value="1024">1024 px</option>
-                <option :value="2048">2048 px</option>
-                <option :value="4096">4096 px</option>
+                <option :value="256">Pequeno (256 px)</option>
+                <option :value="512">Médio (512 px)</option>
+                <option :value="1024">Grande (1024 px)</option>
+                <option :value="2048">Impressão (2048 px)</option>
+                <option :value="4096">Máximo (4096 px)</option>
               </select>
             </label>
           </div>
-          <p v-if="o.logo && (o.ecc === 'L' || o.ecc === 'M')" class="text-xs opacity-60">
-            Com logo, a correção de erro é elevada para Máxima (H) automaticamente.
+          <p class="text-xs opacity-60">
+            <strong>Resistência a danos:</strong> níveis maiores mantêm a leitura
+            mesmo com logo, desgaste ou sujeira — em troca de um desenho mais denso.
+          </p>
+          <p v-if="o.logo && (o.ecc === 'L' || o.ecc === 'M')" class="text-xs text-primary opacity-80">
+            Como há um logo, a resistência é ajustada para Máxima automaticamente.
           </p>
           <div class="grid grid-cols-2 gap-3">
             <button class="btn btn-primary" :disabled="!canRender" @click="download('png')">
@@ -519,11 +558,6 @@ function clearHistory() {
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><path d="M14 14h3v3M21 14v.01M14 21h.01M21 17v4h-4" /></svg>
               <span class="text-sm">Digite um conteúdo para ver o QR Code.</span>
             </div>
-          </div>
-          <div v-show="canRender" class="flex w-full flex-wrap justify-center gap-2">
-            <span class="badge badge-ghost">{{ o.resolution }} px</span>
-            <span class="badge badge-ghost">Correção {{ effectiveEcc }}</span>
-            <span class="badge badge-ghost capitalize">{{ o.dotsType.replace("-", " ") }}</span>
           </div>
         </div>
       </div>

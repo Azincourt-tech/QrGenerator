@@ -1,5 +1,32 @@
 <script setup>
+import { ref, onMounted } from "vue";
 import QrStudio from "./components/QrStudio.vue";
+
+const THEME_KEY = "qrstudio.theme";
+const theme = ref("light");
+
+function applyTheme(t) {
+  theme.value = t;
+  document.documentElement.setAttribute("data-theme", t);
+  try {
+    localStorage.setItem(THEME_KEY, t);
+  } catch {
+    /* ignore */
+  }
+}
+function toggleTheme() {
+  applyTheme(theme.value === "dark" ? "light" : "dark");
+}
+
+onMounted(() => {
+  let saved = "light";
+  try {
+    saved = localStorage.getItem(THEME_KEY) || "light";
+  } catch {
+    /* ignore */
+  }
+  applyTheme(saved);
+});
 </script>
 
 <template>
@@ -24,12 +51,15 @@ import QrStudio from "./components/QrStudio.vue";
           </p>
         </div>
 
-        <!-- Alternância de tema claro/escuro -->
-        <label class="swap swap-rotate btn btn-ghost btn-circle" title="Alternar tema">
-          <input type="checkbox" class="theme-controller" value="dark" />
-          <svg class="swap-off h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M5.64 17l-.71.71a1 1 0 0 0 1.41 1.41l.71-.71A1 1 0 0 0 5.64 17zM5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1zm7-7a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1zM5.64 7.05a1 1 0 0 0 .7.29 1 1 0 0 0 .71-.29 1 1 0 0 0 0-1.41l-.71-.71a1 1 0 0 0-1.41 1.41zM17 5.64a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.71.71A1 1 0 0 0 17 5.64zM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zm-2.36 6a1 1 0 0 0-1.41 1.41l.71.71a1 1 0 0 0 1.41-1.41zM12 19a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1zm0-14a7 7 0 1 0 7 7 7 7 0 0 0-7-7z" /></svg>
-          <svg class="swap-on h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05z" /></svg>
-        </label>
+        <!-- Alternância de tema claro/escuro (controlada por JS) -->
+        <button
+          class="btn btn-ghost btn-circle"
+          :title="theme === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro'"
+          @click="toggleTheme"
+        >
+          <svg v-if="theme === 'dark'" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M5.64 17l-.71.71a1 1 0 0 0 1.41 1.41l.71-.71A1 1 0 0 0 5.64 17zM5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1zm7-7a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1zM5.64 7.05a1 1 0 0 0 .7.29 1 1 0 0 0 .71-.29 1 1 0 0 0 0-1.41l-.71-.71a1 1 0 0 0-1.41 1.41zM17 5.64a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.71.71A1 1 0 0 0 17 5.64zM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2zm-2.36 6a1 1 0 0 0-1.41 1.41l.71.71a1 1 0 0 0 1.41-1.41zM12 19a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1zm0-14a7 7 0 1 0 7 7 7 7 0 0 0-7-7z" /></svg>
+          <svg v-else class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.05 8.05 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05z" /></svg>
+        </button>
       </header>
 
       <QrStudio initial-text="https://github.com/azincourt-tech/qrgenerator" />

@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
-/* DaisyUI como plugin do Tailwind v4 (temas claro/escuro). */
+/* DaisyUI como plugin do Tailwind v4. Tema claro é o padrão; o escuro é
+   ativado manualmente pelo botão (data-theme no <html>), não pelo SO. */
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
+  themes: light --default, dark;
+}
+
+/* Bordas levemente arredondadas em campos, botões e caixas. */
+:root {
+  --radius-field: 0.625rem !important;
+  --radius-box: 1rem !important;
+  --radius-selector: 0.625rem !important;
 }
 
 html,

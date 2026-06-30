@@ -291,7 +291,7 @@ function clearHistory() {
 <template>
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr]">
     <!-- ====== Controles ====== -->
-    <div class="flex flex-col gap-6">
+    <div class="flex min-w-0 flex-col gap-6">
       <!-- Conteúdo -->
       <div class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body gap-3">
@@ -446,9 +446,9 @@ function clearHistory() {
               <span class="text-xs opacity-50">PNG, JPG ou SVG</span>
             </div>
             <div v-else class="flex items-center gap-3 rounded-xl border border-base-300 bg-base-200 p-3">
-              <img :src="o.logo" alt="Logo" class="h-11 w-11 rounded-lg border border-base-300 bg-base-100 object-contain" />
-              <span class="flex-1 truncate text-sm">{{ o.logoName }}</span>
-              <button class="btn btn-ghost btn-xs" @click="removeLogo">Remover</button>
+              <img :src="o.logo" alt="Logo" class="h-11 w-11 shrink-0 rounded-lg border border-base-300 bg-base-100 object-contain" />
+              <span class="min-w-0 flex-1 truncate text-sm" :title="o.logoName">{{ o.logoName }}</span>
+              <button class="btn btn-ghost btn-xs shrink-0" @click="removeLogo">Remover</button>
             </div>
             <input ref="logoInput" type="file" accept="image/*" hidden @change="onLogoInput" />
 
@@ -541,7 +541,7 @@ function clearHistory() {
     </div>
 
     <!-- ====== Preview + Histórico ====== -->
-    <div class="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
+    <div class="flex min-w-0 flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
       <div class="card border border-base-300 bg-base-100 shadow-sm">
         <div class="card-body items-center gap-4">
           <div class="qr-checker flex w-full items-center justify-center rounded-2xl border border-base-300 p-5">
